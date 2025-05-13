@@ -4,6 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/gallery/',
   plugins: [react(), tailwindcss()],
   server: {
     allowedHosts: ['oneplate-cloud.duckdns.org'],
