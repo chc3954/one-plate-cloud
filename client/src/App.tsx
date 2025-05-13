@@ -46,11 +46,15 @@ function App() {
       <div className="container mx-auto size-full flex-1 p-4">
         <h2>Image Gallery</h2>
         <div className="mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {images.map((img) => (
-            <div key={img.filename}>
-              <img src={img.url} alt={img.filename} className="size-full rounded object-cover" />
-            </div>
-          ))}
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            images.map((img) => (
+              <div key={img.filename}>
+                <img src={img.url} alt={img.filename} className="size-full rounded object-cover" />
+              </div>
+            ))
+          )}
         </div>
 
         {/* Pagination */}
