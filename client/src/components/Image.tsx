@@ -6,6 +6,15 @@ interface ImageProps {
 }
 
 export const Image = ({ filename, url }: ImageProps) => {
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    const file = new Blob([url], { type: 'image/*' });
+
+    link.href = URL.createObjectURL(file);
+    link.download = filename;
+    link.click();
+  };
+
   return (
     <div
       key={filename}
@@ -17,7 +26,7 @@ export const Image = ({ filename, url }: ImageProps) => {
         className="aspect-square size-full rounded border border-gray-400 object-cover shadow"
       />
       <div className="absolute top-2 right-2 flex gap-1 text-white">
-        <button className="image-tool-button bg-gray-800">
+        <button className="image-tool-button bg-gray-800" onClick={handleDownload}>
           <Download className="m-3 size-5" />
         </button>
         <button className="image-tool-button bg-red-600">
