@@ -8,7 +8,8 @@ const { deleteFile } = require("../utils/fileUtils");
 
 const router = express.Router();
 
-const SERVER_URL = process.env.SERVER_URL || "http://localhost:3000";
+const PORT = process.env.PORT || 3000;
+const SERVER_URL = process.env.SERVER_URL || `http://localhost:${PORT}`;
 
 const allowedMimeTypes = [
   "image/jpeg",
