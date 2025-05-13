@@ -1,5 +1,17 @@
 @import 'tailwindcss';
 
+.container {
+  @apply mx-auto my-[80px] size-full p-4;
+}
+
+.gallery {
+  @apply mx-auto my-10 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
+}
+
 .button {
   @apply cursor-pointer rounded bg-gray-700 px-4 py-2 text-white disabled:cursor-auto disabled:opacity-20;
+}
+
+.image-tool-button {
+  @apply z-10 cursor-pointer rounded-full opacity-0 group-hover:opacity-70 hover:opacity-90;
 }
