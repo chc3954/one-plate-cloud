@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Download, Trash2 } from 'lucide-react';
 
 interface ImageProps {
@@ -15,6 +16,18 @@ export const Image = ({ filename, url }: ImageProps) => {
     link.click();
   };
 
+  const handleDelete = async () => {
+    const response = await axios.delete(`http://localhost:3000/api/delete/${filename}`, {
+      headers: { 'x-api-key': import.meta.env.VITE_API_KEY },
+    });
+    if (response.status === 200) {
+      alert('Image deleted successfully');
+      window.location.reload();
+    } else {
+      alert('Error deleting image');
+    }
+  };
+
   return (
     <div
       key={filename}
@@ -29,7 +42,7 @@ export const Image = ({ filename, url }: ImageProps) => {
         <button className="image-tool-button bg-gray-800" onClick={handleDownload}>
           <Download className="m-3 size-5" />
         </button>
-        <button className="image-tool-button bg-red-600">
+        <button className="image-tool-button bg-red-600" onClick={handleDelete}>
           <Trash2 className="m-3 size-5" />
         </button>
       </div>
