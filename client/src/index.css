@@ -1,1 +1,5 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+.button {
+  @apply cursor-pointer rounded bg-gray-700 px-4 py-2 text-white disabled:cursor-auto disabled:opacity-20;
+}
