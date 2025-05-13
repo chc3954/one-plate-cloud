@@ -1,6 +1,7 @@
 const fs = require("fs");
 const express = require("express");
 const path = require("path");
+const verifyApiKey = require("../middleware/verifyApiKey");
 
 const router = express.Router();
 
@@ -46,6 +47,17 @@ router.get("/list", (req, res) => {
       totalPages,
       images: imageUrls,
     });
+  });
+});
+
+router.delete("/delete/:filename", verifyApiKey, (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(imagesDir, filename);
+  fs.unlink(filePath, (err) => {
+    if (err) {
+      return res.status(500).json({ error: "Failed to delete image" });
+    }
+    res.status(200).json({ message: "Image deleted successfully" });
   });
 });
 
