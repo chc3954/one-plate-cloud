@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Image } from '../Image';
 import { NoImage } from './NoImage';
 import { Loading } from './Loading';
-import { Bounce, toast, ToastContainer } from 'react-toastify';
+import { Bounce, toast } from 'react-toastify';
 
 interface ApiResponse {
   page: number;
