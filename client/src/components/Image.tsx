@@ -4,9 +4,10 @@ import { Download, Trash2 } from 'lucide-react';
 interface ImageProps {
   filename: string;
   url: string;
+  onDelete: (filename: string) => void;
 }
 
-export const Image = ({ filename, url }: ImageProps) => {
+export const Image = ({ filename, url, onDelete }: ImageProps) => {
   const handleDownload = () => {
     const link = document.createElement('a');
     const file = new Blob([url], { type: 'image/*' });
@@ -21,8 +22,7 @@ export const Image = ({ filename, url }: ImageProps) => {
       headers: { 'x-api-key': import.meta.env.VITE_API_KEY },
     });
     if (response.status === 200) {
-      alert('Image deleted successfully');
-      window.location.reload();
+      onDelete(filename);
     } else {
       alert('Error deleting image');
     }

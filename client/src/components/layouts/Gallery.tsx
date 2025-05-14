@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Image } from '../Image';
 import { NoImage } from './NoImage';
 import { Loading } from './Loading';
+import { Bounce, toast, ToastContainer } from 'react-toastify';
 
 interface ApiResponse {
   page: number;
@@ -20,23 +21,38 @@ export const Gallery = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3000/api/list?page=${page}`);
-        console.log('Fetched images:', response.data);
+  const fetchImages = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`http://localhost:3000/api/list?page=${page}`);
+      setImages(response.data.images);
+      setTotalPages(response.data.totalPages);
 
-        setImages(response.data.images);
-        setTotalPages(response.data.totalPages);
-      } catch (error) {
-        console.error('Error fetching images:', error);
-      } finally {
-        setIsLoading(false);
+      if (response.data.images.length === 0 && page > 1) {
+        setPage(page - 1);
       }
-    };
+    } catch (error) {
+      console.error('Error fetching images:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchImages();
   }, [page]);
+
+  const handleDelete = (filenameToDelete: string) => {
+    fetchImages().then(() => {
+      toast.success(`Image "${filenameToDelete}" deleted successfully!`, {
+        position: 'bottom-right',
+        autoClose: 2000,
+        hideProgressBar: true,
+        theme: 'dark',
+        transition: Bounce,
+      });
+    });
+  };
 
   const handlePreviousPage = () => setPage((p) => Math.max(p - 1, 1));
   const handleNextPage = () => setPage((p) => Math.min(p + 1, totalPages));
@@ -55,7 +71,7 @@ export const Gallery = () => {
     <>
       <div className="gallery">
         {images.map((img) => (
-          <Image key={img.filename} filename={img.filename} url={img.url} />
+          <Image key={img.filename} filename={img.filename} url={img.url} onDelete={handleDelete} />
         ))}
       </div>
       {/* Pagination */}
