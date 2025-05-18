@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Download, Trash2 } from 'lucide-react';
+import { SERVER_URL } from '../constants';
 
 interface ImageProps {
   filename: string;
@@ -18,7 +19,7 @@ export const Image = ({ filename, url, onDelete }: ImageProps) => {
   };
 
   const handleDelete = async () => {
-    const response = await axios.delete(`http://localhost:3000/api/delete/${filename}`, {
+    const response = await axios.delete(`${SERVER_URL}/api/delete/${filename}`, {
       headers: { 'x-api-key': import.meta.env.VITE_API_KEY },
     });
     if (response.status === 200) {

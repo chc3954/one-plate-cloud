@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { Image } from '../Image';
 import { NoImage } from './NoImage';
 import { Loading } from './Loading';
-import { Bounce, toast, ToastContainer } from 'react-toastify';
+import { Bounce, toast } from 'react-toastify';
+import { SERVER_URL } from '../../constants';
 
 interface ApiResponse {
   page: number;
@@ -24,7 +25,7 @@ export const Gallery = () => {
   const fetchImages = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`http://localhost:3000/api/list?page=${page}`);
+      const response = await axios.get(`${SERVER_URL}/api/list?page=${page}`);
       setImages(response.data.images);
       setTotalPages(response.data.totalPages);
 
