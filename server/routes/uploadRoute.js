@@ -5,11 +5,9 @@ const sharp = require("sharp");
 const upload = require("../config/multerConfig");
 const verifyApiKey = require("../middleware/verifyApiKey");
 const { deleteFile } = require("../utils/fileUtils");
+const { SERVER_URL } = require("../constants");
 
 const router = express.Router();
-
-const PORT = process.env.PORT || 3000;
-const SERVER_URL = process.env.SERVER_URL || `http://localhost:${PORT}`;
 
 const allowedMimeTypes = [
   "image/jpeg",

@@ -2,11 +2,10 @@ const fs = require("fs");
 const express = require("express");
 const path = require("path");
 const verifyApiKey = require("../middleware/verifyApiKey");
+const { SERVER_URL } = require("../constants");
 
 const router = express.Router();
 
-const PORT = process.env.PORT || 3000;
-const SERVER_URL = process.env.SERVER_URL || `http://localhost:${PORT}`;
 const imagesDir = path.join(__dirname, "..", "images");
 
 router.get("/list", (req, res) => {
