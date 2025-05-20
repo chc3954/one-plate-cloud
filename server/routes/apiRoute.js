@@ -1,7 +1,9 @@
 const fs = require("fs");
 const express = require("express");
 const path = require("path");
+const upload = require("../config/multerConfig");
 const verifyApiKey = require("../middleware/verifyApiKey");
+const { convertToWebP, isValidImage } = require("../utils/imageProcessors");
 const { SERVER_URL } = require("../constants");
 
 const router = express.Router();
@@ -48,6 +50,52 @@ router.get("/list", (req, res) => {
     });
   });
 });
+
+router.post(
+  "/upload",
+  verifyApiKey,
+  upload.array("images", 10),
+  async (req, res) => {
+    const files = req.files;
+
+    if (!files || files.length === 0) {
+      return res.status(400).json({ error: "At least one file is required" });
+    }
+
+    const result = {
+      success: [],
+      failed: [],
+    };
+
+    for (const file of files) {
+      if (!isValidImage(file)) {
+        deleteFile(file.path);
+        result.failed.push({
+          original: file.originalname,
+          error: "Unsupported file format",
+        });
+        continue;
+      }
+
+      try {
+        const outputFilename = await convertToWebP(file);
+        result.success.push({
+          original: file.originalname,
+          url: `${SERVER_URL}/images/${outputFilename}`,
+        });
+      } catch (err) {
+        console.error("Error processing image:", file.originalname, err);
+        deleteFile(file.path);
+        result.failed.push({
+          original: file.originalname,
+          error: "Failed to process image",
+        });
+      }
+    }
+
+    return res.json(result);
+  }
+);
 
 router.delete("/delete/:filename", verifyApiKey, (req, res) => {
   const filename = req.params.filename;
